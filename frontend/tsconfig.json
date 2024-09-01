@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
     "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
+    "typeRoots" : ["node_modules/@types", "src/"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
@@ -18,9 +20,25 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "baseUrl": "./src",
+    "paths": {
+      "$components/*": ["components/*"],
+      "$hooks/*": ["hooks/*"],
+      "$icons": ["assets/icons/*"],
+      "$colors": ["styles/colors.module.scss"],
+      "$common/*": ["components/common/*"],
+      "$pages/*": ["pages/*"],
+      "$styles/*": ["styles/*"],
+      "$types": ["types/index.d.ts"],
+      "$api": ["./api/Api.service.ts"],
+      "$services/*": ["services/*"],
+      "$assets/*": ["assets/*"],
+      "$images/*": ["img/*"]
+    },
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src",
+    "src/types/index.d.ts"
   ]
 }

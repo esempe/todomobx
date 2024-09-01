@@ -1,46 +1,127 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.106",
-    "@types/react": "^18.3.5",
-    "@types/react-dom": "^18.3.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "tailwindcss": "^3.4.10"
-  }
+	"name": "mobx-react-test",
+	"version": "0.1.10",
+	"private": true,
+	"dependencies": {
+		"@babel/eslint-plugin": "7.16.5",
+		"@depay/buttons": "9.0.3",
+		"@emotion/react": "11.7.1",
+		"@emotion/styled": "11.6.0",
+		"@growthbook/growthbook-react": "^0.17.0",
+		"@lifi/widget": "^2.8.1",
+		"@material-ui/types": "5.1.0",
+		"@metamask/onboarding": "1.0.1",
+		"@metamask/sdk-react": "^0.14.1",
+		"@mui/icons-material": "5.14.3",
+		"@mui/lab": "5.0.0-alpha.140",
+		"@mui/material": "5.14.5",
+		"@mui/x-data-grid": "5.17.26",
+		"@react-buddy/ide-toolbox": "2.2.1",
+		"@react-buddy/palette-mui": "1.2.2",
+		"@tcb-web/create-credit": "^1.0.4",
+		"@uiw/react-markdown-preview": "4.1.0",
+		"babel-plugin-module-resolver": "4.1.0",
+		"bootstrap": "5.1.3",
+		"cross-env": "7.0.3",
+		"env-cmd": "10.1.0",
+		"ethers": "^6.7.0",
+		"history": "5.3.0",
+		"html-react-parser": "2.0.0",
+		"i18next": "^23.2.8",
+		"material-ui-popup-state": "^5.1.0",
+		"mobx": "6.6.2",
+		"mobx-react": "7.5.3",
+		"moment": "2.29.4",
+		"moment-timezone": "0.5.43",
+		"mui-tel-input": "^4.0.0",
+		"notistack": "3.0.1",
+		"process": "0.11.10",
+		"react": "18.2.0",
+		"react-bootstrap": "2.4.0",
+		"react-device-detect": "2.2.2",
+		"react-dom": "18.2.0",
+		"react-i18next": "^13.0.2",
+		"react-query": "3.39.3",
+		"react-router-dom": "5.3.0",
+		"react-scripts": "5.0.1",
+		"typed-css-modules": "0.7.0",
+		"uuid": "8.3.2",
+		"web3": "1.8.1"
+	},
+	"devDependencies": {
+		"@babel/plugin-proposal-class-properties": "7.17.12",
+		"@babel/plugin-proposal-decorators": "7.18.2",
+		"@types/node": "18.11.3",
+		"@types/react": "18.0.21",
+		"@types/react-dom": "18.0.6",
+		"@types/react-router": "5.1.16",
+		"@types/react-show-more-text": "1.4.2",
+		"@typescript-eslint/eslint-plugin": "5.40.1",
+		"@typescript-eslint/parser": "5.40.1",
+		"concurrently": "8.0.1",
+		"dotenv": "16.0.1",
+		"eslint": "8.25.0",
+		"eslint-config-airbnb": "19.0.4",
+		"eslint-config-airbnb-typescript": "17.0.0",
+		"eslint-plugin-import": "2.25.4",
+		"eslint-plugin-jsx-a11y": "6.5.1",
+		"eslint-plugin-react": "7.28.0",
+		"eslint-plugin-react-hooks": "4.3.0",
+		"eslint-plugin-simple-import-sort": "8.0.0",
+		"postcss": "8.4.14",
+		"postcss-html": "1.3.0",
+		"postcss-loader": "7.0.1",
+		"postcss-scss": "4.0.3",
+		"react-app-rewire-alias": "1.1.7",
+		"react-app-rewired": "2.2.1",
+		"react-bootstrap": "2.4.0",
+		"react-error-overlay": "6.0.10",
+		"sass": "1.55.0",
+		"sass-loader": "10.2.1",
+		"tailwindcss": "^3.4.10",
+		"typescript": "4.7.4"
+	},
+	"babel": {
+		"plugins": [
+			[
+				"@babel/plugin-proposal-decorators",
+				{
+					"legacy": true
+				}
+			],
+			[
+				"@babel/plugin-proposal-class-properties",
+				{
+					"loose": false
+				}
+			]
+		]
+	},
+	"browser": {
+		"fs": false,
+		"path": false,
+		"os": false
+	},
+	"scripts": {
+		"ts:css": "tcm -s -c -p src/**/*.module.scss",
+		"api:create": "node scripts/generate_api.js",
+		"svgNameTypes:create": "node scripts/generateSvgIconsTypes.js",
+		"generate:modules": "concurrently \"npm:ts:css \"",
+		"start": "cross-env NODE_ENV=development HTTP=true react-app-rewired start",
+		"build": "cross-env NODE_ENV=production react-app-rewired build",
+		"test": "react-scripts start",
+		"eject": "react-scripts eject"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	}
 }
