@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { Todo } from './entities/todo.entity';
@@ -9,22 +13,41 @@ export class TodoService {
   constructor(@InjectModel(Todo) private todoRep: typeof Todo) {}
 
   create(createTodoDto: CreateTodoDto) {
+    if (!createTodoDto.title) {
+      throw new BadRequestException('Title is required');
+    }
     return this.todoRep.create(createTodoDto as any);
   }
 
   findAll() {
-    return `This action returns all todo`;
+    return this.todoRep.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} todo`;
+  async findOne(id: number) {
+    const todo = await this.todoRep.findByPk(id);
+    if (!todo) {
+      throw new NotFoundException(`Todo with id ${id} not found`);
+    }
+    return todo;
   }
 
-  update(id: number, updateTodoDto: UpdateTodoDto) {
-    return `This action updates a #${id} todo`;
+  async update(id: number, updateTodoDto: UpdateTodoDto) {
+    const todo = await this.todoRep.findByPk(id);
+    if (!todo) {
+      throw new NotFoundException(`Todo with id ${id} not found`);
+    }
+    await todo.update(updateTodoDto as any);
+    return todo;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} todo`;
+  async remove(id: number) {
+    const todo = await this.todoRep.findByPk(id);
+    if (!todo) {
+      throw new NotFoundException(`Todo with id ${id} not found`);
+    }
+    await todo.destroy();
+
+    // TO DO: Implement standart for response
+    return 'success deleted';
   }
 }

@@ -7,7 +7,7 @@ export class Todo extends Model {
   @Column({ primaryKey: true, autoIncrement: true })
   id: number;
 
-  @Column
+  @Column({ allowNull: false })
   title: string;
 
   @Column({ defaultValue: false })
