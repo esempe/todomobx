@@ -1,4 +1,8 @@
-import { makeAutoObservable, observable } from "mobx";
+import { Api } from "api/api";
+import { makeAutoObservable, runInAction } from "mobx";
+import { MobxQuery } from "./MobxTanstack/MobxQuery";
+import { QueryClient } from "@tanstack/react-query";
+import { MobxMutation } from "./MobxTanstack/MobxMutation";
 
 export type Todo = {
 	id: string;
@@ -11,33 +15,104 @@ interface addTaskDTO {
 }
 
 export class TodoStore {
+	queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				refetchInterval: false,
+				refetchOnWindowFocus: false,
+			},
+		},
+	});
+	isLoading: boolean;
+
 	constructor() {
 		makeAutoObservable(this);
+		this.fetchTodos();
 	}
 
-	todos: Todo[] = [{ id: "1", title: "Test", completed: false }];
+	todos: Todo[] = [];
+
+	fetchTodos = async () => {
+		this.isLoading = true;
+		try {
+			const fetchedTodos = await this.todosQuery.fetch();
+			runInAction(() => {
+				this.todos = fetchedTodos;
+			});
+		} catch (error) {
+			runInAction(() => {
+				this.isLoading = false;
+			});
+		}
+	};
+
+	todosQuery = new MobxQuery(
+		() => ({
+			queryKey: ["todos"],
+			queryFn: async () => {
+				console.log("fetching");
+				const res = await fetch("http://localhost:4000/todo");
+				this.isLoading = false;
+				return res.json() as Promise<any>;
+			},
+		}),
+		this.queryClient
+	);
+
+	addTodoMutation = new MobxMutation(
+		() => ({
+			mutationKey: ["add-todo"],
+			mutationFn: async (title: string) => {
+				const res = await fetch("http://localhost:4000/todo", {
+					method: "POST",
+					body: JSON.stringify({ title }),
+					headers: { "Content-Type": "application/json" },
+				});
+				return res.json();
+			},
+			onSuccess: (res) => {
+				this.fetchTodos();
+			},
+		}),
+		this.queryClient
+	);
+
+	editTodoMutation = new MobxMutation(
+		() => ({
+			mutationKey: ["edit-todo"],
+			mutationFn: async ({
+				id,
+				title,
+				completed,
+			}: {
+				id: string;
+				title: string;
+				completed: boolean;
+			}) => {
+				const res = await fetch(`http://localhost:4000/todo/${id}`, {
+					method: "PATCH",
+					body: JSON.stringify({ title, completed }),
+					headers: { "Content-Type": "application/json" },
+				});
+				return res.json();
+			},
+			onSuccess: (res) => {
+				this.fetchTodos();
+			},
+		}),
+		this.queryClient
+	);
 
 	addTask({ title }: addTaskDTO) {
-		const todo: Todo = {
-			id: Math.random().toString(36).substr(2, 9),
-			title,
-			completed: false,
-		};
-
-		this.todos = [todo, ...this.todos];
+		this.addTodoMutation.mutate(title);
 	}
 
-	removeTodo(id: string) {
-		this.todos = this.todos.filter((todo) => todo.id !== id);
+	removeTask(id: string) {
+		// this.todos = this.todos.filter((todo) => todo.id !== id);
 	}
 
 	toggleCompleted(id: string) {
-		this.todos = this.todos.map((todo) =>
-			todo.id === id ? { ...todo, completed: !todo.completed } : todo
-		);
-	}
-
-	get getAll() {
-		return [...this.todos];
+		const { title, completed } = this.todos.find((todo) => todo.id === id);
+		this.editTodoMutation.mutate({ title, completed: !completed, id });
 	}
 }

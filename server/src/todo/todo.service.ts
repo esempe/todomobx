@@ -19,8 +19,8 @@ export class TodoService {
     return this.todoRep.create(createTodoDto as any);
   }
 
-  findAll() {
-    return this.todoRep.findAll();
+  async findAll() {
+    return await this.todoRep.findAll();
   }
 
   async findOne(id: number) {
@@ -48,6 +48,11 @@ export class TodoService {
     await todo.destroy();
 
     // TO DO: Implement standart for response
+    return 'success deleted';
+  }
+
+  async removeAll() {
+    await this.todoRep.destroy({ where: {} });
     return 'success deleted';
   }
 }

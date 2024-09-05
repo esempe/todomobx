@@ -21,8 +21,10 @@ export class TodoController {
   }
 
   @Get()
-  findAll() {
-    return this.todoService.findAll();
+  async findAll() {
+    const all = await this.todoService.findAll();
+
+    return all.sort((a, b) => a.createdAt - b.createdAt).reverse();
   }
 
   @Get(':id')
@@ -38,5 +40,10 @@ export class TodoController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.todoService.remove(+id);
+  }
+
+  @Delete('')
+  removeAll() {
+    return this.todoService.removeAll();
   }
 }

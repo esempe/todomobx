@@ -7,15 +7,16 @@ export const TodoItem = ({ item }: { item: Todo }) => {
 	const toggleCompleted = () => {
 		store.toggleCompleted(id);
 	};
-
+	const deleteTodo = () => {};
 	return (
-		<button
-			className="inline-flex border-2 gap-2 px-2 py-3"
-			onClick={toggleCompleted}
-		>
-			{completed ? "[+]" : `${"[ "}${" "} ${" ]"}`}
-
-			<div className="">{title}</div>
-		</button>
+		<>
+			<button
+				className="inline-flex border-2 gap-2 px-2 py-3"
+				onClick={toggleCompleted}
+			>
+				{completed ? "[+]" : `${"[ "}${" "} ${" ]"}`}
+				<div className="">{title}</div>
+			</button>
+		</>
 	);
 };
