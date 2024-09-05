@@ -7,16 +7,23 @@ export const TodoItem = ({ item }: { item: Todo }) => {
 	const toggleCompleted = () => {
 		store.toggleCompleted(id);
 	};
-	const deleteTodo = () => {};
+	const removeTodo = () => {
+		store.removeTask(id);
+	};
 	return (
-		<>
+		<div className="flex w-full">
 			<button
-				className="inline-flex border-2 gap-2 px-2 py-3"
+				className="flex border-2 gap-2 px-2 py-3 w-full"
 				onClick={toggleCompleted}
 			>
-				{completed ? "[+]" : `${"[ "}${" "} ${" ]"}`}
-				<div className="">{title}</div>
+				{/* {completed ? "[+]" : `${"[ "}${" "} ${" ]"}`} */}
+				<div className={`${completed ? "line-through" : ""}`}>
+					{title} {completed ? "[+]" : `${"[ "}${" "} ${" ]"}`}
+				</div>
 			</button>
-		</>
+			<button className="border-2 px-2" onClick={removeTodo}>
+				Удалить
+			</button>
+		</div>
 	);
 };

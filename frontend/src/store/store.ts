@@ -103,11 +103,29 @@ export class TodoStore {
 		this.queryClient
 	);
 
+	removeTodoMutation = new MobxMutation(
+		() => ({
+			mutationKey: ["edit-todo"],
+			mutationFn: async ({ id }: { id: string }) => {
+				const res = await fetch(`http://localhost:4000/todo/${id}`, {
+					method: "DELETE",
+					headers: { "Content-Type": "application/json" },
+				});
+				return res;
+			},
+			onSuccess: async (res) => {
+				this.fetchTodos();
+			},
+		}),
+		this.queryClient
+	);
+
 	addTask({ title }: addTaskDTO) {
 		this.addTodoMutation.mutate(title);
 	}
 
 	removeTask(id: string) {
+		this.removeTodoMutation.mutate({ id });
 		// this.todos = this.todos.filter((todo) => todo.id !== id);
 	}
 

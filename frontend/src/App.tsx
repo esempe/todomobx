@@ -22,12 +22,14 @@ export const App = observer(() => {
 	};
 
 	return (
-		<div className="w-full flex flex-col items-center">
-			<h1>Mega todo</h1>
-			<div className="">{todos.length}</div>
-			<div className=" mb-2">
+		<div className="w-full flex flex-col text-2xl">
+			<div className="flex flex-col items-center">
+				<h1>One Piece</h1>
+				<div className="">{todos.length}</div>
+			</div>
+			<div className=" mb-5 flex gap-2 px-3">
 				<input
-					className="border-2"
+					className="border-2 p-2"
 					type="text"
 					onChange={onInputChange}
 					value={value}
@@ -35,17 +37,16 @@ export const App = observer(() => {
 				<button
 					onClick={addTodo}
 					disabled={isLoading}
-					className="disabled:bg-black"
+					className="disabled:opacity-50 px-4 border-2"
 				>
 					add
 				</button>
 			</div>
-			<div className="inline-flex flex-col justify-end">
+			<div className="flex-col justify-end w-full px-3">
 				{todos.map((t) => (
 					<TodoItem item={t} />
 				))}
 			</div>
 		</div>
-		// <div className=""></div>
 	);
 });
